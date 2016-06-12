@@ -1,0 +1,19 @@
+{
+    "version": "1.8.0",
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "outDir": "js",
+        "sourceMap": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "removeComments": true,
+        "noImplicitAny": false
+    },
+    "filesGlob": [
+        "typings.d.ts",
+        "src/**/*.ts",
+        "!src/**/*.spec.ts"
+    ]
+}
