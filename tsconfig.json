@@ -1,5 +1,5 @@
 {
-    "version": "1.8.0",
+    "version": "1.8.10",
     "compilerOptions": {
         "target": "es5",
         "module": "commonjs",
@@ -11,9 +11,7 @@
         "removeComments": true,
         "noImplicitAny": false
     },
-    "filesGlob": [
-        "typings.d.ts",
-        "src/**/*.ts",
-        "!src/**/*.spec.ts"
+    "files": [
+        "typings/index.d.ts"
     ]
 }
