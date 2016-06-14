@@ -11,7 +11,9 @@
         "removeComments": true,
         "noImplicitAny": false
     },
-    "files": [
-        "typings/index.d.ts"
+    "filesGlob": [
+        "typings/index.d.ts",
+        "**/*.ts",
+        "!node_modules"
     ]
 }
