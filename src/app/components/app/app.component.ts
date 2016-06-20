@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
+import { ROUTER_DIRECTIVES } from "@angular/router";
 
-import { HeroesComponent } from "../hero/hero.component";
 import { HeroService } from "../../services/hero.service";
 
 @Component({
@@ -8,13 +8,14 @@ import { HeroService } from "../../services/hero.service";
     template: `
 <h1>{{title}}</h1>
 <nav>
-    <a linkTo="/dashboard">Dashboard</a>
-    <a linkTo="/heroes">Heroes</a>
+    <a [routerLink]="['/dashboard']">Dashboard</a>
+    <a [routerLink]="['/heroes']">Heroes</a>
 </nav>
-<route-view></route-view>
+<!-- Routed views fo here -->
+<router-outlet></router-outlet>
     `,
     directives: [
-        HeroesComponent
+        ROUTER_DIRECTIVES
     ],
     providers: [
         HeroService
@@ -23,4 +24,8 @@ import { HeroService } from "../../services/hero.service";
 
 export class AppComponent {
     title = "My Hero Academia";
+
+    constructor() {
+        console.log("AppComponent constructor");
+    }
 }

@@ -10,6 +10,9 @@ npm install -g gulp
 npm install -g lite-server
 npm install -g rimraf
 
+# fresh install
+npm run clean-install
+
 # build and run
 npm run build
 

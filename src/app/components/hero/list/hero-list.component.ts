@@ -1,12 +1,16 @@
-import { Component } from "@angular/core";
-import { OnInit } from "@angular/core";
+import {
+    Component,
+    OnInit,
+    OnDestroy
+} from "@angular/core";
 
-import { Hero } from "../../classes/hero/hero";
-import { HeroDetailComponent } from "../detail/detail.component";
-import { HeroService } from "../../services/hero.service";
+import { Router } from "@angular/router";
+
+import { Hero } from "../../../classes/hero/hero";
+import { HeroService } from "../../../services/hero.service";
 
 @Component({
-    selector: "my-heroes",
+    selector: "hero-list",
     styles: [`
         .selected {
             background-color: #CFD8DC !important;
@@ -57,33 +61,46 @@ import { HeroService } from "../../services/hero.service";
         }
     `],
     template: `
-<h1>{{title}}</h1>
-<h2>My Heroes</h2>
+<h2>Heroes</h2>
 <ul class="heroes">
     <li *ngFor="let hero of heroes"
-        (click)="onSelect(hero)"
-        [class.selected]="hero === selectedHero">
-        <span class="badge">{{hero.id}}</span>{{hero.name}}
+        (click)="gotoHeroDetail(hero)"
+        [class.selected]="isSelected(hero)">
+        <span class="badge">{{hero.id}}</span> {{hero.name}}
     </li>
 </ul>
-<my-hero-detail [hero]="selectedHero"></my-hero-detail>
-    `,
-    directives: [
-        HeroDetailComponent
-    ]
+    `
 })
 
-export class HeroesComponent implements OnInit {
-    title = "Tour of Heroes";
-
+export class HeroListComponent implements OnInit, OnDestroy {
     heroes: Hero[];
-    selectedHero: Hero;
 
-    constructor(private heroService: HeroService) {
+    private selectedId: number;
+    private sub: any;
+
+    constructor(
+        private router: Router,
+        private heroService: HeroService
+    ) {
+        console.log("HeroListComponent constructor");
     }
 
     ngOnInit() {
-        this.getHeroes();
+        console.log("HeroListComponent OnInit");
+
+        this.sub = this.router.routerState.queryParams.subscribe(params => {
+            this.selectedId = +params["id"];
+
+            console.log(this.selectedId);
+
+            this.getHeroes();
+        });
+    }
+
+    ngOnDestroy() {
+        console.log("HeroListComponent OnDestroy");
+
+        this.sub.unsubscribe();
     }
 
     getHeroes() {
@@ -91,9 +108,12 @@ export class HeroesComponent implements OnInit {
             .then(heroes => this.heroes = heroes);
     }
 
-    onSelect(hero: Hero) {
-        this.selectedHero = hero;
+    isSelected(hero: Hero) {
+        return hero.id === this.selectedId;
     }
 
-
+    gotoHeroDetail(hero: Hero) {
+        console.log("HeroListComponent::gotoHeroDetail");
+        this.router.navigate(["/hero", hero.id]);
+    }
 }
