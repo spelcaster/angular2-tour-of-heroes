@@ -6,6 +6,9 @@ import { HeroService } from "../../services/hero.service";
 @Component({
     moduleId: module.id,
     selector: "my-app",
+    styleUrls: [
+        "app.component.css"
+    ],
     templateUrl: "app.component.html",
     directives: [
         ROUTER_DIRECTIVES
