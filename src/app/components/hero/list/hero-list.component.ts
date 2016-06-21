@@ -10,6 +10,7 @@ import { Hero } from "../../../classes/hero/hero";
 import { HeroService } from "../../../services/hero.service";
 
 @Component({
+    moduleId: module.id,
     selector: "hero-list",
     styles: [`
         .selected {
@@ -60,16 +61,7 @@ import { HeroService } from "../../../services/hero.service";
             border-radius: 4px 0 0 4px;
         }
     `],
-    template: `
-<h2>Heroes</h2>
-<ul class="heroes">
-    <li *ngFor="let hero of heroes"
-        (click)="gotoHeroDetail(hero)"
-        [class.selected]="isSelected(hero)">
-        <span class="badge">{{hero.id}}</span> {{hero.name}}
-    </li>
-</ul>
-    `
+    templateUrl: "hero-list.component.html",
 })
 
 export class HeroListComponent implements OnInit, OnDestroy {
