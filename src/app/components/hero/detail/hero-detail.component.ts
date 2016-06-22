@@ -1,5 +1,7 @@
 import {
     Component,
+    EventEmitter,
+    Output,
     Input,
     OnInit,
     OnDestroy
@@ -25,7 +27,11 @@ import { HeroService } from "../../../services/hero.service";
 })
 
 export class HeroDetailComponent implements OnInit, OnDestroy {
-    hero: Hero;
+    @Input() hero: Hero;
+    @Output() close = new EventEmitter();
+
+    error: any;
+    navigated = false;
 
     private sub: any;
 
@@ -43,6 +49,15 @@ export class HeroDetailComponent implements OnInit, OnDestroy {
         this.sub = this.route.params.subscribe(params => {
             let id = +params["id"];
 
+            if (!id) {
+                this.navigated = false;
+                this.hero = new Hero();
+
+                return;
+            }
+
+            this.navigated = true;
+
             this.heroService.getHero(id).then(
                 hero => this.hero = hero
             );
@@ -53,6 +68,15 @@ export class HeroDetailComponent implements OnInit, OnDestroy {
         console.log("HeroDetailComponent OnDestroy");
 
         this.sub.unsubscribe();
+    }
+
+    save() {
+        this.heroService.save(this.hero)
+            .then(hero => {
+                this.hero = hero; // saved hero, w/ id if new
+                this.goBack(hero);
+            })
+            .catch(error => this.error = error); // TODO: Display error msg
     }
 
     gotoHeroList() {
@@ -66,8 +90,12 @@ export class HeroDetailComponent implements OnInit, OnDestroy {
         );
     }
 
-    goBack() {
-        window.history.back();
+    goBack(savedHero: Hero = null) {
+        this.close.emit(savedHero);
+
+        if (this.navigated) {
+            window.history.back();
+        }
 
     }
 }
